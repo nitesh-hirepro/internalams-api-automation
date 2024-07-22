@@ -1,0 +1,8 @@
+/input_data/login
+/logs
+/venv
+dummyfiletest.py
+report.xlsx
+.idea
+__pycache__
+__pycache__/
