@@ -32,7 +32,7 @@ class TestImpact(unittest.TestCase):
             results.append({'Test Case': 'get_impact_data', 'Status': 'Fail', 'Error': str(e)})
             raise APIClientError(f'Failed to get impact data: {e}')
 
-    @unittest.skip('data already created')
+    # @unittest.skip('data already created')
     def test_create_impact_entry(self):
         logger.info('===================================================================')
         logger.info('Running create_impact_entry test case')
