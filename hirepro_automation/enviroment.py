@@ -1,4 +1,5 @@
-login_server = input('server_name :: beta or live ')
+login_server = input('server_name :: beta or ams ')
+sprint_version = input('sprint_version: 193 or 194 ')
 
 generic_domain = ''
 
