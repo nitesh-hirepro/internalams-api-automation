@@ -63,6 +63,22 @@ class TestImpact(unittest.TestCase):
             impact_result.append({'Test Case': 'search_impact', 'Status': 'Fail', 'Error': str(e)})
             raise APIClientError(f'Failed to get impact data: {e}')
 
+    def test_04_update_impact_data(self):
+        logger.info('===================================================================')
+        logger.info('Running update_impact_entry test case')
+        try:
+            impact_update_data = self.impact_api_client.update_impact_data()
+            latest_timesheet_id = self.impact_api_client.get_latest_impact_id()
+            self.assertEqual(impact_update_data['statusCode'], 200)
+            self.assertEqual(impact_update_data['TimeSheetId'], latest_timesheet_id)
+            impact_result.append({'Test Case': 'update_impact_entry', 'Status': 'Pass'})
+        except AssertionError as a:
+            impact_result.append({'Test Case': 'update_impact_entry', 'Status': 'Fail', 'Error': str(a)})
+        except APIClientError as e:
+            logger.error(f'Error while updating impact data: {e}', exc_info=True)
+            impact_result.append({'Test Case': 'update_impact_data', 'Status': 'Fail', 'Error': str(e)})
+            raise APIClientError(f'Failed to update impact data: {e}')
+
     # @classmethod
     # def tearDownClass(cls):
     #     final_report = OutputReport()

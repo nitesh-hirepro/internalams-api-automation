@@ -12,7 +12,7 @@ class OutputReport(styles.FontColor):
         super().__init__()
         self.date_today = datetime.datetime.now()
         self.date_today = self.date_today.strftime('%d %B %Y')
-        self.Expected_success_cases = list(map(lambda x: 'Pass', range(0, 3)))
+        self.Expected_success_cases = list(map(lambda x: 'Pass', range(0, 4)))
         self.Actual_success_cases = []
 
         # Write Excel sheet for output results
@@ -39,6 +39,7 @@ class OutputReport(styles.FontColor):
         self.ws.write(2, self.impact_use_case_col, 'Get Impact Data', self.style8)
         self.ws.write(3, self.impact_use_case_col, 'Create Impact Entry', self.style8)
         self.ws.write(4, self.impact_use_case_col, 'Search Impact Data', self.style8)
+        self.ws.write(5, self.impact_use_case_col, 'Update Imapct Data', self.style8)
 
         logger.info(f'result list {impact_result}')
         if impact_result[0]['Test Case'] == 'get_impact_data':
@@ -68,6 +69,15 @@ class OutputReport(styles.FontColor):
                 self.ws.write(self.row, self.impact_status_col, 'Fail', self.style3)
             self.row = self.row + 1
 
+        if impact_result[3]['Test Case'] == 'update_impact_entry':
+            if impact_result[3]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.impact_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.impact_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
     def overall_status(self):
         self.ws.write(0, 0, 'OVERALL STATUS', self.style4)
         if self.Expected_success_cases == self.Actual_success_cases:
@@ -82,14 +92,3 @@ class OutputReport(styles.FontColor):
         self.ws.write(0, 6, 'SERVER', self.style4)
         self.ws.write(0, 7, login_server, self.style5)
         self.wb_Result.save(output_paths.get('impact_report'))
-
-
-
-
-
-
-
-
-
-
-

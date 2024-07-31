@@ -13,5 +13,7 @@ apis = {
     "login_to_internalams": generic_domain + 'common/user/v2/login_user/',
     "get_impact_data": generic_domain + 'oneams/impact/get_all_time_sheets/',
     "create_impact": generic_domain + 'oneams/impact/create_update_time_sheet/',
-    "search_impact": generic_domain + 'oneams/impact/get_all_time_sheets/'
+    "search_impact": generic_domain + 'oneams/impact/get_all_time_sheets/',
+    "get_all_time_sheet_entrys": generic_domain + 'oneams/impact/get_all_time_sheet_entrys/',
+
 }

@@ -3,6 +3,7 @@ from hirepro_automation.enviroment import apis
 from utils.login_api_client import LoginAPIClient
 from utils.data_loader import DataLoader
 from utils.helper import get_datetime_utc
+from utils.logger import logger
 
 
 class ImpactAPIClient(LoginAPIClient):
@@ -62,10 +63,10 @@ class ImpactAPIClient(LoginAPIClient):
     def search_impact(self):
         payload = {
             "PagingCriteria": {
-                 "MaxResults": 20,
-                 "PageNo": 1,
-                 "IsCountRequired": True
-                 },
+                "MaxResults": 20,
+                "PageNo": 1,
+                "IsCountRequired": True
+            },
             "TimeSheetOption": 0,
             "Filters": {
                 "UnlockExceededType": "-1",
@@ -80,9 +81,78 @@ class ImpactAPIClient(LoginAPIClient):
         response.raise_for_status()
         return response.json()
 
+    def get_latest_impact_id(self):
+        all_impact_data = self.get_impact_data()
+        latest_impact_data = all_impact_data['TimeSheetEntrys'][0]
+        logger.info(f'latest impact data: {latest_impact_data}')
+        latest_impact_id = latest_impact_data['Id']
+        logger.info(f'latest impact id: {latest_impact_id}')
+        return latest_impact_id
+
+    def get_all_time_sheet_entrys_id(self):
+        time_sheet_id = self.get_latest_impact_id()
+        payload = {
+            "TimeSheetEntryOption": "0",
+            "TimeSheetId": str(time_sheet_id)
+        }
+        logger.info('Calling get_all_time_sheet_entry api')
+        url = apis.get('get_all_time_sheet_entrys')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        logger.info('got get_all_time_sheet_entry api response succesfully')
+        response_data = response.json()
+        time_sheet_entrys = response_data['TimeSheetEntrys']['Entrys']
+        latest_entry = time_sheet_entrys[0]
+        latest_entry_id = latest_entry['Id']
+        logger.info(f'latest entry id: {latest_entry_id}')
+        created_on_date = latest_entry['Date']
+        logger.info(f'created_on_date: {created_on_date}')
+        return latest_entry_id, created_on_date
+
+    def update_impact_data(self):
+        time_sheet_id = self.get_latest_impact_id()
+        entry_id, created_on_date = self.get_all_time_sheet_entrys_id()
+        payload = {
+            "TimeSheet": {
+                "Entrys": [
+                    {
+                        "Id": entry_id,
+                        "User": "Nitesh",
+                        "UserId": "Nitesh",
+                        "Date": "2024-07-29",
+                        "Percentage": 100,
+                        "Customer": 2749,
+                        "CustomCustomerText": "",
+                        "CustomerText": "python 3.10 account",
+                        "BusinessOrder": 472,
+                        "BusinessOrderText": "python 3.10 opp",
+                        "Requisition": 30304,
+                        "CustomRequisitionText": "",
+                        "RequisitionText": "python 3.10 Job",
+                        "Activity": 9889,
+                        "ActivityText": "General Administration",
+                        "ActivityType": 9846,
+                        "ActivityTypeText": "Administration",
+                        "Notes": "remarks updated",
+                        "AccountId": 1,
+                        "AccountText": "Account Latest Two",
+                        "TimeSheetId": time_sheet_id,
+                        "Bu": None,
+                        "Sbu": None,
+                        "Pl": None
+                    }
+                ],
+                "Date": created_on_date,
+                "TimeSheetId": time_sheet_id
+            }
+        }
+        url = apis.get('create_impact')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
 
 # impact = ImpactAPIClient()
 # data1 = DataLoader()
 # logged_in_data = data1.load_login_data()
 # impact.login(logged_in_data)
-# print(impact.search_impact())
+# print(impact.update_impact_data())
