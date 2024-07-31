@@ -79,6 +79,21 @@ class TestImpact(unittest.TestCase):
             impact_result.append({'Test Case': 'update_impact_data', 'Status': 'Fail', 'Error': str(e)})
             raise APIClientError(f'Failed to update impact data: {e}')
 
+    def test_05_create_bulk_impact(self):
+        logger.info('===================================================================')
+        logger.info('Running create_bulk_impact test case')
+        try:
+            response = self.impact_api_client.create_bulk_impact()
+            self.assertEqual(response['status'], 'OK')
+            self.assertEqual(response['statusCode'], 200)
+            impact_result.append({'Test Case': 'create_bulk_impact', 'Status': 'Pass'})
+        except AssertionError as a:
+            impact_result.append({'Test Case': 'create_bulk_impact', 'Status': 'Fail', 'Error': str(a)})
+        except APIClientError as e:
+            logger.error(f'Error while updating impact data: {e}', exc_info=True)
+            impact_result.append({'Test Case': 'create_bulk_impact', 'Status': 'Fail', 'Error': str(e)})
+            raise APIClientError(f'Failed to update impact data: {e}')
+
     # @classmethod
     # def tearDownClass(cls):
     #     final_report = OutputReport()

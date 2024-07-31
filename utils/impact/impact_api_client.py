@@ -2,7 +2,7 @@ import requests
 from hirepro_automation.enviroment import apis
 from utils.login_api_client import LoginAPIClient
 from utils.data_loader import DataLoader
-from utils.helper import get_datetime_utc
+from utils.helper import get_datetime_utc, get_tomorrow_date_utc
 from utils.logger import logger
 
 
@@ -150,6 +150,22 @@ class ImpactAPIClient(LoginAPIClient):
         response = requests.post(url, headers=self.header, json=payload)
         response.raise_for_status()
         return response.json()
+
+    def create_bulk_impact(self):
+        today_date = get_datetime_utc()
+        tomorrow_date = get_tomorrow_date_utc()
+        payload = {
+            "FromDate": today_date,
+            "ToDate": tomorrow_date,
+            "ActivityType": 7055,
+            "Activity": 9848,
+            "EmployeeIds": ["Ascript1", "Ascript2"]
+        }
+        url = apis.get('bulk_create_impact')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
 
 # impact = ImpactAPIClient()
 # data1 = DataLoader()
