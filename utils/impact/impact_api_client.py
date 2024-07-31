@@ -119,7 +119,7 @@ class ImpactAPIClient(LoginAPIClient):
                         "Id": entry_id,
                         "User": "Nitesh",
                         "UserId": "Nitesh",
-                        "Date": "2024-07-29",
+                        "Date": created_on_date,
                         "Percentage": 100,
                         "Customer": 2749,
                         "CustomCustomerText": "",
