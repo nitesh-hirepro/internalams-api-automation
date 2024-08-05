@@ -151,6 +151,19 @@ class ImpactAPIClient(LoginAPIClient):
         response.raise_for_status()
         return response.json()
 
+    def submit_impact(self):
+        time_sheet_id = self.get_latest_impact_id()
+        payload = {
+            "TimeSheetDetails": {
+                "Comments": "",
+                "TimeSheetIds": [time_sheet_id]
+            }
+        }
+        url = apis.get('submit_impact')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
     def create_bulk_impact(self):
         today_date = get_datetime_utc()
         tomorrow_date = get_tomorrow_date_utc()
@@ -165,7 +178,6 @@ class ImpactAPIClient(LoginAPIClient):
         response = requests.post(url, headers=self.header, json=payload)
         response.raise_for_status()
         return response.json()
-
 
 # impact = ImpactAPIClient()
 # data1 = DataLoader()

@@ -45,7 +45,7 @@ class TestImpact(unittest.TestCase):
         except APIClientError as e:
             logger.error(f'Error while fetching impact data: {e}', exc_info=True)
             impact_result.append({'Test Case': 'create_impact_data', 'Status': 'Fail', 'Error': str(e)})
-            raise APIClientError(f'Failed to get impact data: {e}')
+            raise APIClientError(f'Failed to create impact data: {e}')
         except AssertionError as a:
             impact_result.append({'Test Case': 'create_impact_entry', 'Status': 'Fail', 'Error': str(a)})
 
@@ -79,7 +79,22 @@ class TestImpact(unittest.TestCase):
             impact_result.append({'Test Case': 'update_impact_data', 'Status': 'Fail', 'Error': str(e)})
             raise APIClientError(f'Failed to update impact data: {e}')
 
-    def test_05_create_bulk_impact(self):
+    def test_05_submit_impact(self):
+        logger.info('===================================================================')
+        logger.info('Running update_impact_entry test case')
+        try:
+            response = self.impact_api_client.submit_impact()
+            self.assertEqual(response['status'], 'OK')
+            self.assertEqual(response['statusCode'], 200)
+            impact_result.append({'Test Case': 'submit_impact', 'Status': 'Pass'})
+        except AssertionError as a:
+            impact_result.append({'Test Case': 'submit_impact', 'Status': 'Fail', 'Error': str(a)})
+        except APIClientError as e:
+            logger.error(f'Error while submitting impact data: {e}', exc_info=True)
+            impact_result.append({'Test Case': 'submit_impact', 'Status': 'Fail', 'Error': str(e)})
+            raise APIClientError(f'Failed to submit impact data: {e}')
+
+    def test_06_create_bulk_impact(self):
         logger.info('===================================================================')
         logger.info('Running create_bulk_impact test case')
         try:
@@ -90,9 +105,9 @@ class TestImpact(unittest.TestCase):
         except AssertionError as a:
             impact_result.append({'Test Case': 'create_bulk_impact', 'Status': 'Fail', 'Error': str(a)})
         except APIClientError as e:
-            logger.error(f'Error while updating impact data: {e}', exc_info=True)
+            logger.error(f'Error while create bulk impact data: {e}', exc_info=True)
             impact_result.append({'Test Case': 'create_bulk_impact', 'Status': 'Fail', 'Error': str(e)})
-            raise APIClientError(f'Failed to update impact data: {e}')
+            raise APIClientError(f'Failed to create bulk impact data: {e}')
 
     # @classmethod
     # def tearDownClass(cls):

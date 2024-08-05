@@ -15,5 +15,6 @@ apis = {
     "create_impact": generic_domain + 'oneams/impact/create_update_time_sheet/',
     "search_impact": generic_domain + 'oneams/impact/get_all_time_sheets/',
     "get_all_time_sheet_entrys": generic_domain + 'oneams/impact/get_all_time_sheet_entrys/',
+    "submit_impact": generic_domain + 'oneams/impact/submit_time_sheet/',
     "bulk_create_impact": generic_domain + 'oneams/impact/bulk_create_timesheet/'
 }
