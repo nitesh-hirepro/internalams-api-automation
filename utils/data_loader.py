@@ -14,3 +14,7 @@ class DataLoader(ExcelRead):
         self.excel_read(input_paths['login_input_sheet'], 0)
         return self.complete_excel_data[1]
 
+    def load_login_data_admin(self):
+        self.excel_read(input_paths['login_input_sheet'], 0)
+        return self.complete_excel_data[2]
+

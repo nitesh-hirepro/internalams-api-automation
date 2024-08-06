@@ -18,7 +18,17 @@ class TestImpact(unittest.TestCase):
         logged_in_data = data1.load_login_data()
         cls.impact_api_client.login(logged_in_data)
 
-    def specific_setUp_for_approval_case(self):
+    def login_for_recruiter(self):
+        data = DataLoader()
+        recruiter_login_data = data.load_login_data()
+        self.impact_api_client.login(recruiter_login_data)
+
+    def login_for_manager(self):
+        data = DataLoader()
+        manager_login_data = data.load_login_data_manager()
+        self.impact_api_client.login(manager_login_data)
+
+    def login_for_admin(self):
         data = DataLoader()
         manager_login_data = data.load_login_data_manager()
         self.impact_api_client.login(manager_login_data)
@@ -103,7 +113,7 @@ class TestImpact(unittest.TestCase):
         logger.info('===================================================================')
         logger.info('Running approve impact test case')
         try:
-            self.specific_setUp_for_approval_case()
+            self.login_for_manager()
             response = self.impact_api_client.approve_impact()
             self.assertEqual(response['status'], 'OK')
             self.assertEqual(response['statusCode'], 200)
@@ -115,7 +125,23 @@ class TestImpact(unittest.TestCase):
             impact_result.append({'Test Case': 'approve_impact', 'Status': 'Fail', 'Error': str(e)})
             raise APIClientError(f'Failed to submit impact data: {e}')
 
-    def test_07_create_bulk_impact(self):
+    def test_07_request_to_remove_timesheets(self):
+        logger.info('===================================================================')
+        logger.info('Running request to remove timesheet cases')
+        try:
+            self.login_for_recruiter()
+            response = self.impact_api_client.request_to_remove_timesheets()
+            self.assertEqual(response['status'], 'OK')
+            self.assertEqual(response['statusCode'], 200)
+            impact_result.append({'Test Case': 'request_to_remove_timesheets', 'Status': 'Pass'})
+        except AssertionError as a:
+            impact_result.append({'Test Case': 'request_to_remove_timesheets', 'Status': 'Fail', 'Error': str(a)})
+        except APIClientError as e:
+            logger.error(f'Error while requesting to remove timesheets : {e}', exc_info=True)
+            impact_result.append({'Test Case': 'request_to_remove_timesheets', 'Status': 'Fail', 'Error': str(e)})
+            raise APIClientError(f'Failed to submit impact data: {e}')
+
+    def test_08_create_bulk_impact(self):
         logger.info('===================================================================')
         logger.info('Running create_bulk_impact test case')
         try:

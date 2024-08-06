@@ -17,5 +17,6 @@ apis = {
     "get_all_time_sheet_entrys": generic_domain + 'oneams/impact/get_all_time_sheet_entrys/',
     "submit_impact": generic_domain + 'oneams/impact/submit_time_sheet/',
     "bulk_create_impact": generic_domain + 'oneams/impact/bulk_create_timesheet/',
-    "approve_time_sheet": generic_domain + 'oneams/impact/approve_time_sheet/'
+    "approve_time_sheet": generic_domain + 'oneams/impact/approve_time_sheet/',
+    'request_to_improve_timesheets': generic_domain + 'oneams/impact/request_to_remove_timesheets/'
 }

@@ -12,7 +12,7 @@ class OutputReport(styles.FontColor):
         super().__init__()
         self.date_today = datetime.datetime.now()
         self.date_today = self.date_today.strftime('%d %B %Y')
-        self.Expected_success_cases = list(map(lambda x: 'Pass', range(0, 7)))
+        self.Expected_success_cases = list(map(lambda x: 'Pass', range(0, 9)))
         self.Actual_success_cases = []
 
         # Write Excel sheet for output results
@@ -42,7 +42,9 @@ class OutputReport(styles.FontColor):
         self.ws.write(5, self.impact_use_case_col, 'Update Imapct Data', self.style8)
         self.ws.write(6, self.impact_use_case_col, 'Submit Impact', self.style8)
         self.ws.write(7, self.impact_use_case_col, 'Approve Impact', self.style8)
-        self.ws.write(8, self.impact_use_case_col, 'Create Bulk Impact', self.style8)
+        self.ws.write(8, self.impact_use_case_col, 'Request to Remove Timesheets', self.style8)
+        # self.ws.write(9, self.impact_use_case_col, 'Delete Entry', self.style8)
+        self.ws.write(9, self.impact_use_case_col, 'Create Bulk Impact', self.style8)
 
         logger.info(f'result list {impact_result}')
         if impact_result[0]['Test Case'] == 'get_impact_data':
@@ -99,8 +101,17 @@ class OutputReport(styles.FontColor):
                 self.ws.write(self.row, self.impact_status_col, 'Fail', self.style3)
             self.row = self.row + 1
 
-        if impact_result[6]['Test Case'] == 'create_bulk_impact':
+        if impact_result[6]['Test Case'] == 'request_to_remove_timesheets':
             if impact_result[6]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.impact_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.impact_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+        if impact_result[7]['Test Case'] == 'create_bulk_impact':
+            if impact_result[7]['Status'] == 'Pass':
                 self.Actual_success_cases.append('Pass')
                 self.ws.write(self.row, self.impact_status_col, 'Pass', self.style7)
             else:

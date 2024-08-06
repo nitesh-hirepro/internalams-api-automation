@@ -197,7 +197,6 @@ class ImpactAPIClient(LoginAPIClient):
                 }
         }
         url = apis.get('approve_time_sheet')
-        print(self.header)
         response = requests.post(url, headers=self.header, json=payload)
         response.raise_for_status()
         return response.json()
@@ -217,9 +216,45 @@ class ImpactAPIClient(LoginAPIClient):
         response.raise_for_status()
         return response.json()
 
+    def get_my_approved_record(self):
+        payload = {
+            "PagingCriteria":
+                {
+                    "MaxResults": 20,
+                    "PageNo": 1,
+                    "IsCountRequired": True
+                },
+            "TimeSheetOption": 0,
+            "Filters":
+                {
+                    "Status": 1
+                }
+        }
+        url = apis.get('get_impact_data')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def latest_id_for_delete_request(self):
+        time_sheet_entrys = self.get_my_approved_record()['TimeSheetEntrys']
+        logger.info("--------------------------------------------------------------------")
+        logger.info("")
+        impact_id = time_sheet_entrys[0].get('Id')
+        return impact_id
+
+    def request_to_remove_timesheets(self):
+        time_sheet_id = self.latest_id_for_delete_request()
+        payload = {
+            "TimeSheetIds": [time_sheet_id],
+            "Comment": "request to remove"
+        }
+        url = apis.get('request_to_improve_timesheets')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
 
 # impact = ImpactAPIClient()
 # data1 = DataLoader()
-# logged_in_data = data1.load_login_data_manager()
+# logged_in_data = data1.load_login_data()
 # impact.login(logged_in_data)
-# print(impact.approve_impact())
+# print(impact.latest_id_for_delete_request())
