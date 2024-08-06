@@ -18,6 +18,11 @@ class TestImpact(unittest.TestCase):
         logged_in_data = data1.load_login_data()
         cls.impact_api_client.login(logged_in_data)
 
+    def specific_setUp_for_approval_case(self):
+        data = DataLoader()
+        manager_login_data = data.load_login_data_manager()
+        self.impact_api_client.login(manager_login_data)
+
     def test_01_get_impact_data(self):
         logger.info('===================================================================')
         logger.info('Running get_impact_data test case')
@@ -94,7 +99,23 @@ class TestImpact(unittest.TestCase):
             impact_result.append({'Test Case': 'submit_impact', 'Status': 'Fail', 'Error': str(e)})
             raise APIClientError(f'Failed to submit impact data: {e}')
 
-    def test_06_create_bulk_impact(self):
+    def test_06_approve_impact(self):
+        logger.info('===================================================================')
+        logger.info('Running approve impact test case')
+        try:
+            self.specific_setUp_for_approval_case()
+            response = self.impact_api_client.approve_impact()
+            self.assertEqual(response['status'], 'OK')
+            self.assertEqual(response['statusCode'], 200)
+            impact_result.append({'Test Case': 'approve_impact', 'Status': 'Pass'})
+        except AssertionError as a:
+            impact_result.append({'Test Case': 'approve_impact', 'Status': 'Fail', 'Error': str(a)})
+        except APIClientError as e:
+            logger.error(f'Error while approving impact data: {e}', exc_info=True)
+            impact_result.append({'Test Case': 'approve_impact', 'Status': 'Fail', 'Error': str(e)})
+            raise APIClientError(f'Failed to submit impact data: {e}')
+
+    def test_07_create_bulk_impact(self):
         logger.info('===================================================================')
         logger.info('Running create_bulk_impact test case')
         try:

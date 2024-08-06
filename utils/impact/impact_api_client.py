@@ -24,6 +24,23 @@ class ImpactAPIClient(LoginAPIClient):
         response.raise_for_status()
         return response.json()
 
+    def get_manager_team_record_impact_data(self):
+        payload = {
+            "PagingCriteria": {
+                "MaxResults": 20,
+                "PageNo": 1,
+                "IsCountRequired": True
+            },
+            "TimeSheetOption": 2,
+            "Filters": {
+                "Status": 3
+            }
+        }
+        url = apis.get('get_impact_data')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
     def create_impact_data(self):
         payload = {
             "TimeSheet": {
@@ -164,6 +181,27 @@ class ImpactAPIClient(LoginAPIClient):
         response.raise_for_status()
         return response.json()
 
+    def get_latest_my_team_record_data(self):
+        time_sheet_entrys = self.get_manager_team_record_impact_data()['TimeSheetEntrys']
+        impact_id = time_sheet_entrys[0].get('Id')
+        return impact_id
+
+    def approve_impact(self):
+        impact_id = self.get_latest_my_team_record_data()
+        payload = {
+            "TimeSheetDetails":
+                {
+                    "Comments": "data: approve",
+                    "TimeSheetIds": [impact_id],
+                    "Status": 1
+                }
+        }
+        url = apis.get('approve_time_sheet')
+        print(self.header)
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
     def create_bulk_impact(self):
         today_date = get_datetime_utc()
         tomorrow_date = get_tomorrow_date_utc()
@@ -179,8 +217,9 @@ class ImpactAPIClient(LoginAPIClient):
         response.raise_for_status()
         return response.json()
 
+
 # impact = ImpactAPIClient()
 # data1 = DataLoader()
-# logged_in_data = data1.load_login_data()
+# logged_in_data = data1.load_login_data_manager()
 # impact.login(logged_in_data)
-# print(impact.update_impact_data())
+# print(impact.approve_impact())
