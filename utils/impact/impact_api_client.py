@@ -237,8 +237,6 @@ class ImpactAPIClient(LoginAPIClient):
 
     def latest_id_for_delete_request(self):
         time_sheet_entrys = self.get_my_approved_record()['TimeSheetEntrys']
-        logger.info("--------------------------------------------------------------------")
-        logger.info("")
         impact_id = time_sheet_entrys[0].get('Id')
         return impact_id
 
@@ -249,6 +247,40 @@ class ImpactAPIClient(LoginAPIClient):
             "Comment": "request to remove"
         }
         url = apis.get('request_to_improve_timesheets')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def get_all_records(self):
+        payload = {
+            "PagingCriteria":
+                {
+                    "MaxResults": 20,
+                    "PageNo": 1,
+                    "IsCountRequired": True
+                },
+            "TimeSheetOption": 1,
+            "Filters":
+                {
+                    "Status": 8
+                }
+        }
+        url = apis.get('get_impact_data')
+        response = requests.post(url, headers=self.header, json=payload)
+        response.raise_for_status()
+        return response.json()
+
+    def latest_id_for_all_request(self):
+        time_sheet_entrys = self.get_all_records()['TimeSheetEntrys']
+        impact_id = time_sheet_entrys[0].get('Id')
+        return impact_id
+
+    def accept_remove_request(self):
+        time_sheet_id = self.latest_id_for_all_request()
+        payload = {
+            "TimeSheetIds": [time_sheet_id]
+        }
+        url = apis.get('accept_remove_requests')
         response = requests.post(url, headers=self.header, json=payload)
         response.raise_for_status()
         return response.json()
