@@ -1,4 +1,6 @@
 import datetime
+import random
+import string
 
 
 def get_datetime_utc():
@@ -14,3 +16,28 @@ def get_tomorrow_date_utc():
     tomorrow_utc_str = tomorrow_utc.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
     return tomorrow_utc_str
 
+
+def generate_today_and_year_later_date():
+    today = datetime.datetime.today()
+    one_year_later = today + datetime.timedelta(days=365)
+    today_formatted = today.strftime("%Y-%m-%d")
+    one_year_later_formatted = one_year_later.strftime("%Y-%m-%d")
+    return today_formatted, one_year_later_formatted
+
+
+def generate_dummy_email():
+    # Define possible characters for the local part of the email
+    characters = string.ascii_lowercase + string.digits
+
+    # Randomly select the length of the local part
+    local_part_length = random.randint(6, 12)
+
+    # Generate the local part of the email
+    local_part = ''.join(random.choice(characters) for _ in range(local_part_length))
+
+    domain = 'gmail.com'
+
+    # Combine local part and domain to create the email
+    email = f"{local_part}@{domain}"
+
+    return email

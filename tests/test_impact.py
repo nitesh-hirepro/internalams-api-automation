@@ -30,8 +30,8 @@ class TestImpact(unittest.TestCase):
 
     def login_for_admin(self):
         data = DataLoader()
-        manager_login_data = data.load_login_data_manager()
-        self.impact_api_client.login(manager_login_data)
+        admin_login_data = data.load_login_data_admin()
+        self.impact_api_client.login(admin_login_data)
 
     def test_01_get_impact_data(self):
         logger.info('===================================================================')

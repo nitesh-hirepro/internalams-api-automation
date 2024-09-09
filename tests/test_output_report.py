@@ -4,7 +4,7 @@ from utils import styles
 from hirepro_automation.enviroment import sprint_version, login_server
 from utils.logger import logger
 from utils.output_path import output_paths
-from utils.Result import impact_result
+from utils.Result import impact_result, source_result
 
 
 class OutputReport(styles.FontColor):
@@ -12,7 +12,7 @@ class OutputReport(styles.FontColor):
         super().__init__()
         self.date_today = datetime.datetime.now()
         self.date_today = self.date_today.strftime('%d %B %Y')
-        self.Expected_success_cases = list(map(lambda x: 'Pass', range(0, 9)))
+        self.Expected_success_cases = list(map(lambda x: 'Pass', range(0, 15)))
         self.Actual_success_cases = []
 
         # Write Excel sheet for output results
@@ -23,9 +23,11 @@ class OutputReport(styles.FontColor):
 
         self.impact_use_case_col = 0
         self.impact_status_col = 1
+        self.source_use_case_col = 2
+        self.source_status_col = 3
         self.row = 2
 
-        excel_headers = ['Impact UseCases', 'Status']
+        excel_headers = ['Impact UseCases', 'Status', 'Source Usecases', 'Status']
 
         header_style = self.style0
 
@@ -45,8 +47,14 @@ class OutputReport(styles.FontColor):
         self.ws.write(8, self.impact_use_case_col, 'Request to Remove Timesheets', self.style8)
         self.ws.write(9, self.impact_use_case_col, 'Delete Entry', self.style8)
         self.ws.write(10, self.impact_use_case_col, 'Create Bulk Impact', self.style8)
+        self.ws.write(2, self.source_use_case_col, 'Get All Source/Vendors', self.style8)
+        self.ws.write(3, self.source_use_case_col, 'Create Source', self.style8)
+        self.ws.write(4, self.source_use_case_col, 'Search Source', self.style8)
+        self.ws.write(5, self.source_use_case_col, 'Update Source', self.style8)
+        self.ws.write(6, self.source_use_case_col, 'Archive Source', self.style8)
+        self.ws.write(7, self.source_use_case_col, 'UnArchive Source', self.style8)
 
-        logger.info(f'result list {impact_result}')
+        logger.info(f'impact result list {impact_result}')
         if impact_result[0]['Test Case'] == 'get_impact_data':
             if impact_result[0]['Status'] == 'Pass':
                 self.Actual_success_cases.append('Pass')
@@ -128,6 +136,63 @@ class OutputReport(styles.FontColor):
                 self.ws.write(self.row, self.impact_status_col, 'Fail', self.style3)
             self.row = self.row + 1
 
+        logger.info(f'source result list {source_result}')
+        self.row = 2
+        if source_result[0]['Test Case'] == 'get_source_data':
+            if impact_result[0]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.source_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.source_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+        if source_result[1]['Test Case'] == 'create_source':
+            if impact_result[1]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.source_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.source_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+        if source_result[2]['Test Case'] == 'search_source':
+            if impact_result[2]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.source_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.source_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+        if source_result[3]['Test Case'] == 'update_source':
+            if impact_result[3]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.source_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.source_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+        if source_result[4]['Test Case'] == 'archive_source':
+            if impact_result[4]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.source_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.source_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+        if source_result[5]['Test Case'] == 'unarchive_source':
+            if impact_result[5]['Status'] == 'Pass':
+                self.Actual_success_cases.append('Pass')
+                self.ws.write(self.row, self.source_status_col, 'Pass', self.style7)
+            else:
+                self.Actual_success_cases.append('Fail')
+                self.ws.write(self.row, self.source_status_col, 'Fail', self.style3)
+            self.row = self.row + 1
+
+
     def overall_status(self):
         self.ws.write(0, 0, 'OVERALL STATUS', self.style4)
         if self.Expected_success_cases == self.Actual_success_cases:
@@ -141,4 +206,4 @@ class OutputReport(styles.FontColor):
         self.ws.write(0, 5, self.date_today, self.style5)
         self.ws.write(0, 6, 'SERVER', self.style4)
         self.ws.write(0, 7, login_server, self.style5)
-        self.wb_Result.save(output_paths.get('impact_report'))
+        self.wb_Result.save(output_paths.get('automation_report'))

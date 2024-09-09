@@ -20,6 +20,7 @@ class ImpactAPIClient(LoginAPIClient):
             "Filters": {"Status": 0}
         }
         url = apis.get('get_impact_data')
+        print("Test ", self.header)
         response = requests.post(url, headers=self.header, json=payload)
         response.raise_for_status()
         return response.json()

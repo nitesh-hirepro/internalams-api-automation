@@ -32,10 +32,9 @@ class LoginAPIClient:
             raise APIClientError(f"Login failed: {e}")
 
 
-"""
-login = LoginAPIClient()
-data = DataLoader()
-# below method returns a list
-logged_in_data = data.load_login_data()
-login.login(logged_in_data[0])
-"""
+
+# login = LoginAPIClient()
+# data = DataLoader()
+# logged_in_data = data.load_login_data()
+# login.login(logged_in_data)
+
