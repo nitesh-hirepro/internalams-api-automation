@@ -24,5 +24,6 @@ apis = {
     "create_source": generic_domain + 'rpo/create_source/',
     "update_source": generic_domain + 'rpo/update_source/',
     "archive_source": generic_domain + 'rpo/archive_sources/',
-    "unarchive_source": generic_domain + 'rpo/unarchive_sources/'
+    "unarchive_source": generic_domain + 'rpo/unarchive_sources/',
+    "extract_resume":  generic_domain + 'rpo/extract_resume_from_file_content/'
 }
