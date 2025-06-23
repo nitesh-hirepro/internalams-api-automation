@@ -1,4 +1,6 @@
 import xlrd
+from openpyxl import load_workbook
+import json
 
 
 class ExcelRead:
@@ -58,6 +60,31 @@ class ExcelRead:
         print("Complete Excel data", self.complete_excel_data)
         # print self.complete_excel_data
 
+    def read_xlsx(self, excel_file_path, sheet_index):
+        """
+        Read an Excel (.xlsx) file and return data as a 2D list.
+        
+        Args:
+            excel_file_path (str): Path to the .xlsx file
+            sheet_index (int): Index of the sheet to read (0-based)
+            
+        Returns:
+            list: 2D list where each inner list represents a row from the Excel file
+        """
+        workbook = load_workbook(filename=excel_file_path, read_only=True)
+        sheet = workbook.worksheets[sheet_index]
+        
+        data = []
+        for row in sheet.rows:
+            row_data = []
+            for cell in row:
+                row_data.append(cell.value)
+            data.append(row_data)
+            
+        workbook.close()
+        return data
+
 
 # excel_read_obj = ExcelRead()
-# excel_read_obj.excel_read("../input_data/login/login.xls", 0)
+# print(json.dumps(excel_read_obj.read_xlsx("/home/niteshgupta/internalams_api_automation/input_data/resume_extractor_sheet"
+#                           "/resume_extractor_input_sheet.xlsx", 0), indent=2))
