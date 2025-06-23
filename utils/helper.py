@@ -41,3 +41,14 @@ def generate_dummy_email():
     email = f"{local_part}@{domain}"
 
     return email
+
+def get_value_or_empty(dictionary, key):
+    """
+        Returns the value of the key if it exists in the dictionary,
+        otherwise returns an empty string.
+
+        :param dictionary: dict, the dictionary to check
+        :param key: the key to look for
+        :return: value associated with the key, or empty string if key is not found
+    """
+    return dictionary.get(key, "")
