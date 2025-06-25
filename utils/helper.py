@@ -52,3 +52,6 @@ def get_value_or_empty(dictionary, key):
         :return: value associated with the key, or empty string if key is not found
     """
     return dictionary.get(key, "")
+
+def get_value_or_others(dictionary, key):
+    return dictionary.get(key, "others")

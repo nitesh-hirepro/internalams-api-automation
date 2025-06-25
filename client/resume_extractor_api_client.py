@@ -4,7 +4,7 @@ import requests
 from utils.login_api_client import LoginAPIClient
 from hirepro_automation.enviroment import apis
 from utils.data_loader import DataLoader
-from utils.helper import get_value_or_empty
+from utils.helper import get_value_or_empty, get_value_or_others
 
 
 class ResumeExtractorAPIClient(LoginAPIClient):
@@ -31,7 +31,7 @@ class ResumeExtractorAPIClient(LoginAPIClient):
             candidate_name = get_value_or_empty(personal_details_data, 'Name')
             candidate_email = get_value_or_empty(personal_details_data, 'Email1')
             candidate_mobile = get_value_or_empty(personal_details_data, 'Mobile1')
-            candidate_location = get_value_or_empty(personal_details_data, 'CurrentLocationMappedText')
+            candidate_location = get_value_or_others(personal_details_data, 'CurrentLocationMappedText')
             candidate_experience_in_years = get_value_or_empty(personal_details_data, 'TotalExperienceInYears')
             candidate_experience_in_months = get_value_or_empty(personal_details_data,'TotalExperienceInMonths')
             if candidate_experience_in_years == "":
