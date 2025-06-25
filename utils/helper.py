@@ -55,3 +55,15 @@ def get_value_or_empty(dictionary, key):
 
 def get_value_or_others(dictionary, key):
     return dictionary.get(key, "others")
+
+def compare_experience(expected, extracted):
+    """
+    Compare expected and extracted experience values (as years, can be float or string like '6.8').
+    Returns True if extracted is within [expected-1, expected+1], else False.
+    """
+    try:
+        expected_val = float(expected)
+        extracted_val = float(extracted)
+    except (ValueError, TypeError):
+        return False
+    return (expected_val - 1) <= extracted_val <= (expected_val + 1)

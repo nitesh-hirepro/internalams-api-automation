@@ -1,6 +1,7 @@
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill, Font
 from openpyxl.utils import get_column_letter
+from utils.helper import compare_experience
 
 def postprocess_resume_report(report_path):
     """
@@ -41,7 +42,12 @@ def postprocess_resume_report(report_path):
                 exp_val = ws.cell(row=row, column=exp_idx).value
                 ext_val = ws.cell(row=row, column=ext_idx).value
                 total_count += 1
-                if str(exp_val).strip().lower() == str(ext_val).strip().lower():
+                # Use compare_experience for Experience, else strict equality
+                if exp_col == 'Expected Experience':
+                    is_match = compare_experience(exp_val, ext_val)
+                else:
+                    is_match = str(exp_val).strip().lower() == str(ext_val).strip().lower()
+                if is_match:
                     ws.cell(row=row, column=ext_idx).font = Font(color='008000')  # Green
                 else:
                     ws.cell(row=row, column=ext_idx).font = Font(color='FF0000')  # Red
