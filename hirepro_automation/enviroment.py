@@ -1,12 +1,18 @@
-login_server = input('server_name :: beta or ams ')
+login_server = input('server_name :: beta-internalams or internalams or amsin or beta or ams ')
 sprint_version = input('sprint_version: 193 or 194 ')
 
 generic_domain = ''
 
-if login_server == 'beta':
+if login_server == 'beta-internalams':
     generic_domain = 'https://beta-internalams.hirepro.in/py/'
-else:
+elif login_server == 'internalams':
     generic_domain = 'https://internalams.hirepro.in/py/'
+elif login_server == 'amsin':
+    generic_domain = 'https://amsin.hirepro.in/py/'
+elif login_server == 'beta':
+    generic_domain = 'https://betaams.hirepro.in/py/'
+else:
+    generic_domain = 'https://ams.hirepro.in/py/'
 
 apis = {
     "get_tenant_details":   generic_domain + 'common/get_tenant_details/',
