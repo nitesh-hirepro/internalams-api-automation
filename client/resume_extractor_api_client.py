@@ -53,8 +53,11 @@ class ResumeExtractorAPIClient(LoginAPIClient):
 
     def extract_latest_company(self, work_profile_details) -> str:
         for work_profile in work_profile_details:
-            if work_profile['IsLatest'] == 1:
-                return  get_value_or_empty(work_profile, 'CompanyMappedText')
+            if work_profile.get('IsLatest') == 1:
+                return (
+                        get_value_or_empty(work_profile, 'CompanyMappedText')
+                        or get_value_or_empty(work_profile, 'EmployerText')
+                )
         return ""
 
 # resume = ResumeExtractorAPIClient()
