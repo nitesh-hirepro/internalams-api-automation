@@ -18,7 +18,7 @@ class LoginAPIClient:
             # ---------------------- INTERNALAMS LOGIN ------------------------------
             print("-------------------------------------")
             now = datetime.datetime.now()
-            now = now.strftime('%A %d %B %Y')
+            now = now.strftime('%d-%m-%Y %I:%M:%S %p')
             print("Run started at: ", now)
             login_response = requests.post(apis.get('login_to_internalams'), headers=self.header,
                                            data=json.dumps(login_data))
