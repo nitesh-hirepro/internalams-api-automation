@@ -62,6 +62,7 @@ class TestResumeExtractor:
                             'Extracted Company': extracted.get('Company', ''),
                         })
                         logger.info(f"Processed: {file_name}")
+                        print(f"Resumes parsed so far: {len(results)}")
                     except Exception as e:
                         logger.error(f"Error processing row: {e}")
                         continue
