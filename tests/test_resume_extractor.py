@@ -35,7 +35,7 @@ class TestResumeExtractor:
                 pytest.skip("No data rows in input sheet.")
 
             # 2. Login
-            login_data = data_loader.load_login_data()
+            login_data = data_loader.load_login_data_by_server()
             extractor.login(login_data)
             logger.info("Login successful.")
 
