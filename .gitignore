@@ -7,3 +7,5 @@ report.xlsx
 __pycache__
 __pycache__/
 reports/html_reports
+s.py
+reports/resume_extractor/*
