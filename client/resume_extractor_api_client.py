@@ -31,7 +31,8 @@ class ResumeExtractorAPIClient(LoginAPIClient):
             candidate_name = get_value_or_empty(personal_details_data, 'Name')
             candidate_email = get_value_or_empty(personal_details_data, 'Email1')
             candidate_mobile = get_value_or_empty(personal_details_data, 'Mobile1')
-            candidate_location = get_value_or_empty(personal_details_data, 'CurrentLocationMappedText')
+            candidate_location = (get_value_or_empty(personal_details_data, 'CurrentLocationMappedText') or
+                                  get_value_or_empty(personal_details_data, 'CurrentLocationText'))
             candidate_experience_in_years = get_value_or_empty(personal_details_data, 'TotalExperienceInYears')
             candidate_experience_in_months = get_value_or_empty(personal_details_data,'TotalExperienceInMonths')
             if candidate_experience_in_years == "":
