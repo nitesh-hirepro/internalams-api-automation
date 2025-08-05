@@ -86,7 +86,7 @@ class ResumeExtractorAPIClient(LoginAPIClient):
             "Marital Status": personal_details.get("MaritalStatusText"),
             "DOB": date_of_birth,
             "PAN": personal_details.get("PanNo", ""),
-            "Passport": personal_details.get("Passport", ""),
+            "Passport": personal_details.get("PassportNo", ""),
             "Educational Details": output_education_profile,
             "Work Profiles": output_work_profile
         }
