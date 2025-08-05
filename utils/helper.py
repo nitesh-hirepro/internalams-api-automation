@@ -53,9 +53,6 @@ def get_value_or_empty(dictionary, key):
     """
     return dictionary.get(key, "")
 
-def get_value_or_others(dictionary, key):
-    return dictionary.get(key, "others")
-
 def compare_experience(expected, extracted):
     """
     Compare expected and extracted experience values (as years, can be float or string like '6.8').
@@ -67,3 +64,63 @@ def compare_experience(expected, extracted):
     except (ValueError, TypeError):
         return False
     return (expected_val - 1) <= extracted_val <= (expected_val + 1)
+
+def convert_date_format(date_str: str) -> str:
+    """
+    Args:
+        date_str (str): Input date string in the format 'YYYY-MM-DDTHH:MM:SSZ'.
+
+    Returns:
+        str: Date string in 'DD/MM/YYYY' format.
+    """
+    try:
+        # Parse the input ISO format date
+        dt = datetime.datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+        # Format it to desired output
+        return dt.strftime("%d/%m/%Y")
+    except ValueError as e:
+        return f"Invalid date format: {e}"
+
+def transform_education_data(input_list):
+    """
+    Args:
+        input_list (list): List of dictionaries containing education data.
+
+    Returns:
+        list: Transformed list of dictionaries with required keys.
+    """
+    output_list = []
+    for item in input_list:
+        transformed = {
+            "college": item.get("InstituteMappedText", ""),
+            "degree": item.get("DegreeMappedText", ""),
+            "branch": item.get("BranchMappedText", ""),
+            "yop": item.get("EndYearMappedText", ""),
+            "cgpa/%": item.get("Percentage", ""),
+            "isFinal": item.get("IsFinal", 0)
+        }
+        output_list.append(transformed)
+    return output_list
+
+
+def transform_work_experience(input_list):
+    """
+    Args:
+        input_list (list): List of dictionaries with work experience data.
+
+    Returns:
+        list: Transformed list of dictionaries.
+    """
+    output_list = []
+    for item in input_list:
+        transformed = {
+            "company": item.get("CompanyMappedText") or item.get("EmployerText", ""),
+            "designation": item.get("DesignationMappedText", ""),
+            "fromMonth": item.get("FromMonth", ""),
+            "fromYear": item.get("FromYearText", ""),
+            "toMonth": item.get("ToMonth", ""),
+            "toYear": item.get("ToYearText", ""),
+            "IsLatest": item.get("IsLatest", 0)
+        }
+        output_list.append(transformed)
+    return output_list

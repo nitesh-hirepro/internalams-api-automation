@@ -4,7 +4,7 @@ import requests
 from utils.login_api_client import LoginAPIClient
 from hirepro_automation.enviroment import apis
 from utils.data_loader import DataLoader
-from utils.helper import get_value_or_empty, get_value_or_others
+from utils.helper import get_value_or_empty, convert_date_format, transform_education_data, transform_work_experience
 
 
 class ResumeExtractorAPIClient(LoginAPIClient):
@@ -61,9 +61,40 @@ class ResumeExtractorAPIClient(LoginAPIClient):
                 )
         return ""
 
+    def extract_additional_details(self, file_path):
+        parsed_data = self.extract_resume(file_path)
+        if not (parsed_data.get('status') == 'OK' and parsed_data.get('statusCode') == 200):
+            return parsed_data
+
+        resume_data = parsed_data.get('ParseResume', {})
+        personal_details = resume_data.get('PersonalDetails', {})
+        education_profile = resume_data.get('EducationProfile', [])
+        work_profile = resume_data.get('WorkProfile', [])
+
+        if "DateOfBirth" in personal_details:
+            date_of_birth = convert_date_format(personal_details.get('DateOfBirth'))
+        else:
+            date_of_birth = ''
+
+        output_education_profile = transform_education_data(education_profile)
+        output_work_profile = transform_work_experience(work_profile)
+
+        result = {
+            "Secondary Email": personal_details.get("Email2", ""),
+            "Secondary Phone": personal_details.get("PhoneOffice", ""),
+            "Gender": personal_details.get("GenderText", ""),
+            "Marital Status": personal_details.get("MaritalStatusText"),
+            "DOB": date_of_birth,
+            "PAN": personal_details.get("PanNo", ""),
+            "Passport": personal_details.get("Passport", ""),
+            "Educational Details": output_education_profile,
+            "Work Profiles": output_work_profile
+        }
+        return result
+
 # resume = ResumeExtractorAPIClient()
 # data1 = DataLoader()
 # logged_in_data = data1.load_login_data()
 # resume.login(logged_in_data)
-# print(json.dumps(resume.extract_personal_details("/home/niteshgupta/Downloads/reparse_change/PKPadhy_Profile.pdf"),
+# print(json.dumps(resume.extract_additional_details("/home/niteshgupta/Downloads/RajkumarArumugam_Kanban.pdf"),
 # indent=2))
