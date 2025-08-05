@@ -9,5 +9,7 @@ now = datetime.datetime.now().strftime('%d-%m-%Y_%I:%M:%S_%p')
 
 output_paths = {
     'automation_report': generic_output_path + "impact/test_api_automation_report.xls",
-    'resume_extractor_report': generic_output_path + f'resume_extractor/resume_extraction_report_{login_server}_{now}.xlsx'
+    'resume_extractor_report': generic_output_path + f'resume_extractor/resume_extraction_report_{login_server}_{now}.xlsx',
+    'resume_extractor_additional_report': generic_output_path + f'resume_extractor/resume_extraction_additional_'
+                                                                f'report_{login_server}_{now}.xlsx'
 }

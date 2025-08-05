@@ -1,6 +1,7 @@
 import datetime
 import random
 import string
+import json
 
 
 def get_datetime_utc():
@@ -124,3 +125,13 @@ def transform_work_experience(input_list):
         }
         output_list.append(transformed)
     return output_list
+
+
+def format_objects_for_excel(obj_list):
+    """Format list of objects in the exact format requested"""
+    if not obj_list:
+        return "[]"
+
+    # Convert to the exact format with proper indentation
+    formatted_json = json.dumps(obj_list, indent=4, ensure_ascii=False)
+    return formatted_json

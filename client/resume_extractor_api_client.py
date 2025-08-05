@@ -80,15 +80,15 @@ class ResumeExtractorAPIClient(LoginAPIClient):
         output_work_profile = transform_work_experience(work_profile)
 
         result = {
-            "Secondary Email": personal_details.get("Email2", ""),
-            "Secondary Phone": personal_details.get("PhoneOffice", ""),
+            "SecondaryEmail": personal_details.get("Email2", ""),
+            "SecondaryPhone": personal_details.get("PhoneOffice", ""),
             "Gender": personal_details.get("GenderText", ""),
-            "Marital Status": personal_details.get("MaritalStatusText"),
+            "MaritalStatus": personal_details.get("MaritalStatusText"),
             "DOB": date_of_birth,
             "PAN": personal_details.get("PanNo", ""),
             "Passport": personal_details.get("PassportNo", ""),
-            "Educational Details": output_education_profile,
-            "Work Profiles": output_work_profile
+            "EducationalDetails": output_education_profile,
+            "WorkProfiles": output_work_profile
         }
         return result
 
