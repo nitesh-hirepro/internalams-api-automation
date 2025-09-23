@@ -89,8 +89,8 @@ class TestResumeExtractorAdditional:
                 excel_report.writer.close()
 
                 # Post-process with openpyxl for header and extracted columns coloring
-            #     from utils.openpyxl_postprocess import postprocess_resume_report
-            #     postprocess_resume_report(report_path)
-            #     logger.info(f"Report generated: {report_path}")
-            # else:
-            #     logger.warning("No results to report.")
+                from utils.openpyxl_postprocess import postprocess_resume_additional_report
+                postprocess_resume_additional_report(report_path)
+                logger.info(f"Report generated: {report_path}")
+            else:
+                logger.warning("No results to report.")
