@@ -62,7 +62,7 @@ class TestResumeExtractorAdditional:
                             'Expected Passport': row[8],
                             'Extracted Passport': extracted.get('Passport', ''),
                             'Expected EducationalDetails': row[9],
-                            'Extracted EductaionalDetails': format_objects_for_excel(extracted.get('EducationalDetails')),
+                            'Extracted EducationalDetails': format_objects_for_excel(extracted.get('EducationalDetails')),
                             'Expected ExperienceDetails': row[10],
                             'Extracted ExperienceDetails': format_objects_for_excel(extracted.get('WorkProfiles', ''))
                         })

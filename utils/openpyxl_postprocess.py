@@ -1,5 +1,5 @@
 from openpyxl import load_workbook
-from openpyxl.styles import PatternFill, Font
+from openpyxl.styles import PatternFill, Font, Alignment
 from openpyxl.utils import get_column_letter
 from utils.helper import compare_experience
 
@@ -158,7 +158,7 @@ def postprocess_resume_additional_report(report_path):
         ('Expected DOB', 'Extracted DOB'),
         ('Expected PAN', 'Extracted PAN'),
         ('Expected Passport', 'Extracted Passport'),
-        ('Expected EducationalDetails', 'Extracted EductaionalDetails'),
+        ('Expected EducationalDetails', 'Extracted EducationalDetails'),
         ('Expected ExperienceDetails', 'Extracted ExperienceDetails'),
     ]
 
@@ -188,6 +188,13 @@ def postprocess_resume_additional_report(report_path):
                 else:
                     ws.cell(row=row, column=ext_idx).font = Font(color='FF0000')  # Red
                     wrong_count += 1
+                
+                # Enable text wrapping for JSON columns (EducationalDetails and ExperienceDetails)
+                if 'EducationalDetails' in ext_col or 'ExperienceDetails' in ext_col:
+                    cell = ws.cell(row=row, column=ext_idx)
+                    cell.alignment = Alignment(wrap_text=True, vertical='top', horizontal='left')
+                    # Also wrap the expected columns
+                    ws.cell(row=row, column=exp_idx).alignment = Alignment(wrap_text=True, vertical='top', horizontal='left')
 
             percentage = (wrong_count / total_count * 100) if total_count else 0
             summary_data.append((
