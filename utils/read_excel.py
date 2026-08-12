@@ -1,6 +1,9 @@
+import logging
 import xlrd
 from openpyxl import load_workbook
 import json
+
+logger = logging.getLogger(__name__)
 
 
 class ExcelRead:
@@ -71,6 +74,7 @@ class ExcelRead:
         Returns:
             list: 2D list where each inner list represents a row from the Excel file
         """
+        logger.debug("Reading Excel file: %s (sheet index %s)", excel_file_path, sheet_index)
         workbook = load_workbook(filename=excel_file_path, read_only=True)
         sheet = workbook.worksheets[sheet_index]
         
@@ -82,6 +86,7 @@ class ExcelRead:
             data.append(row_data)
             
         workbook.close()
+        logger.info("Read %d row(s) (including header) from %s", len(data), excel_file_path)
         return data
 
 

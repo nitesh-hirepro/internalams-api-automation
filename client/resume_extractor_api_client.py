@@ -1,10 +1,13 @@
 import base64
 import json
+import logging
 import requests
 from utils.login_api_client import LoginAPIClient
 from hirepro_automation.enviroment import apis
 from utils.data_loader import DataLoader
 from utils.helper import get_value_or_empty, convert_date_format, transform_education_data, transform_work_experience
+
+logger = logging.getLogger(__name__)
 
 
 class ResumeExtractorAPIClient(LoginAPIClient):
@@ -14,6 +17,7 @@ class ResumeExtractorAPIClient(LoginAPIClient):
     def extract_resume(self, file_path):
         file_content = None
         file_name = file_path.split('/')[-1]
+        logger.debug("Calling extract_resume API for: %s", file_name)
         with open(file_path, 'rb') as fr:
             file_content = base64.b64encode(fr.read()).decode('utf-8')
 
@@ -21,9 +25,11 @@ class ResumeExtractorAPIClient(LoginAPIClient):
         url = apis.get("extract_resume")
         response = requests.post(url, headers=self.header, json=posting_request)
         response.raise_for_status()
+        logger.debug("extract_resume response for %s: HTTP %s", file_name, response.status_code)
         return response.json()
 
     def extract_personal_details(self, file_path):
+        file_name = file_path.split('/')[-1]
         parsed_data = self.extract_resume(file_path)
         if parsed_data['status'] == 'OK' and parsed_data['statusCode'] == 200:
             personal_details_data = parsed_data['ParseResume']['PersonalDetails']
@@ -49,7 +55,9 @@ class ResumeExtractorAPIClient(LoginAPIClient):
                 'Experience': candidate_experience,
                 'Company': candidate_latest_company
             }
+            logger.info("Extracted details for %s: Name=%s Email=%s", file_name, candidate_name, candidate_email)
             return response_data
+        logger.warning("extract_personal_details failed for %s: status=%s", file_name, parsed_data.get('status'))
         return parsed_data
 
     def extract_latest_company(self, work_profile_details) -> str:

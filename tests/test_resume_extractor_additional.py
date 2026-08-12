@@ -9,7 +9,6 @@ from utils.input_path import input_paths, generic_input_path
 from utils.output_path import output_paths
 from utils.helper import  format_objects_for_excel
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class TestResumeExtractorAdditional:

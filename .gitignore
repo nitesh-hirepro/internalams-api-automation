@@ -9,3 +9,4 @@ __pycache__/
 reports/html_reports
 s.py
 reports/resume_extractor/*
+resume_extraction_api.py

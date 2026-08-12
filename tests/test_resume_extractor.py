@@ -10,7 +10,6 @@ from utils.write_excel import ExcelReport
 from utils.input_path import input_paths, generic_input_path
 from utils.output_path import output_paths
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class TestResumeExtractor:

@@ -1,7 +1,10 @@
+import logging
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill, Font, Alignment
 from openpyxl.utils import get_column_letter
 from utils.helper import compare_experience
+
+logger = logging.getLogger(__name__)
 
 def postprocess_resume_report(report_path):
     """
@@ -130,6 +133,7 @@ def postprocess_resume_report(report_path):
                 max_length = max(max_length, len(str(val)))
         summary_ws.column_dimensions[get_column_letter(col)].width = max_length + 2
 
+    logger.info("Post-processing complete: %s", report_path)
     wb.save(report_path)
 
 def postprocess_resume_additional_report(report_path):

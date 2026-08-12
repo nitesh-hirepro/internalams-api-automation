@@ -1,5 +1,7 @@
-login_server = input('server_name :: beta-internalams or internalams or amsin or beta or ams ')
-sprint_version = input('sprint_version: 193 or 194 ')
+from utils.helper import prompt_or_env
+
+login_server = prompt_or_env("LOGIN_SERVER", "server_name :: beta-internalams or internalams or amsin or beta or ams")
+sprint_version = prompt_or_env("SPRINT_VERSION", "srint_version: 193 or 194 ", required=False)
 
 generic_domain = ''
 

@@ -2,7 +2,22 @@ import datetime
 import random
 import string
 import json
+import os
+import sys
 
+
+def prompt_or_env(env_var, prompt_text, required=True):
+    value = os.getenv(env_var)
+    if value:
+        return value
+    if not sys.stdin.isatty():
+        if required:
+            raise RuntimeError(  
+                f"{env_var} is not set and no interactive terminal is available to prompt for it. "
+                f"Set it before running, e.g. `export {env_var}=<value>`."
+            )
+        return ''
+    return input(prompt_text)        
 
 def get_datetime_utc():
     now = datetime.datetime.utcnow()
