@@ -45,6 +45,9 @@ class TestResumeExtractor:
                     try:
                         file_name = row[0]
                         full_file_path = generic_input_path + 'resumes/' + file_name
+                        root, extension = os.path.splitext(full_file_path)
+                        # if extension == '.docx':
+                        #  print(extension)
                         extracted = extractor.extract_personal_details(full_file_path)
                         results.append({
                             'File Name': file_name,

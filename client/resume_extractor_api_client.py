@@ -94,7 +94,7 @@ class ResumeExtractorAPIClient(LoginAPIClient):
 
 # resume = ResumeExtractorAPIClient()
 # data1 = DataLoader()
-# logged_in_data = data1.load_login_data()
+# logged_in_data = data1.load_login_data_by_server()
 # resume.login(logged_in_data)
-# print(json.dumps(resume.extract_additional_details("/home/niteshgupta/Downloads/RajkumarArumugam_Kanban.pdf"),
+# print(json.dumps(resume.extract_personal_details("/home/nitesh-gupta/Documents/internalams-automation/internalams-api-automation/input_data/resumes/AasthaThakur_6y_1m_.pdf"),
 # indent=2))
